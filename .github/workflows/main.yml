@@ -36,6 +36,16 @@ jobs:
       run: |
         mkdir -p app/fonts
         node scripts/build-renderer.js || node build-renderer.js || true
+        # تضمین وجود فایل‌های وب در پوشه app
+        if [ ! -f app/index.html ]; then
+          if [ -f index.html ]; then
+            cp index.html app/
+          elif [ -f 1-head.html ]; then
+            cat 1-head.html 2-body.html > app/index.html 2>/dev/null || cp 1-head.html app/index.html
+          fi
+        fi
+        cp -r *.js app/ 2>/dev/null || true
+        cp -r *.html app/ 2>/dev/null || true
 
     - name: Sync Capacitor Android
       run: |
