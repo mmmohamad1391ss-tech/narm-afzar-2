@@ -24,23 +24,24 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Install dependencies & Create required directories
+    - name: Install dependencies & Capacitor CLI
       run: |
         npm install
+        npm install @capacitor/core @capacitor/cli @capacitor/android
         mkdir -p app/fonts
         mkdir -p scripts
         if [ -f build-renderer.js ]; then cp build-renderer.js scripts/; fi
 
-    - name: Build web assets (Ignore missing font error)
+    - name: Build web assets
       run: |
         mkdir -p app/fonts
         node scripts/build-renderer.js || node build-renderer.js || true
 
     - name: Sync Capacitor Android
       run: |
-        npx cap init NovaMusic com.novamusic.app --web-dir app
-        npx cap add android || true
-        npx cap sync android
+        npx @capacitor/cli init NovaMusic com.novamusic.app --web-dir app
+        npx @capacitor/cli add android || true
+        npx @capacitor/cli sync android
 
     - name: Make Gradlew Executable
       run: chmod +x android/gradlew
