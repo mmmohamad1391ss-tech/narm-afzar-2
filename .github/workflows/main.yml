@@ -24,11 +24,15 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Install dependencies
-      run: npm install
+    - name: Install dependencies & Create folders
+      run: |
+        npm install
+        mkdir -p app/fonts
+        mkdir -p scripts
+        if [ -f build-renderer.js ]; then cp build-renderer.js scripts/; fi
 
     - name: Build web assets
-      run: node scripts/build-renderer.js
+      run: node scripts/build-renderer.js || node build-renderer.js
 
     - name: Sync Capacitor Android
       run: |
