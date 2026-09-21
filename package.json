@@ -1,0 +1,64 @@
+{
+  "name": "nova-music",
+  "version": "1.0.0",
+  "description": "NOVA Music \u2014 a local-first desktop music player",
+  "main": "electron/main.js",
+  "author": "NOVA",
+  "license": "MIT",
+  "devDependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource/instrument-sans": "^5.3.0",
+    "electron": "^37.10.3",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "app.nova.music",
+    "productName": "NOVA Music",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**",
+      "app/**",
+      "build/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "signAndEditExecutable": true
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "artifactName": "NOVA-Music-Setup.exe",
+      "shortcutName": "NOVA Music"
+    },
+    "portable": {
+      "artifactName": "NOVA-Music.exe"
+    },
+    "asar": true
+  },
+  "dependencies": {
+    "music-metadata": "^11.15.0"
+  },
+  "scripts": {
+    "build:renderer": "node scripts/build-renderer.js",
+    "start": "node scripts/build-renderer.js && electron .",
+    "dist": "node scripts/build-renderer.js && electron-builder --win --x64"
+  }
+}
